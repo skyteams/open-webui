@@ -126,7 +126,7 @@ async def cancel_ollama_request(request_id: str, user=Depends(get_current_user))
 async def fetch_url(url):
     timeout = aiohttp.ClientTimeout(total=5)
     try:
-        async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with aiohttp.ClientSession(trust_env=True,timeout=timeout) as session:
             async with session.get(url) as response:
                 return await response.json()
     except Exception as e:
@@ -1147,7 +1147,7 @@ async def download_file_stream(
 
     timeout = aiohttp.ClientTimeout(total=600)  # Set the timeout
 
-    async with aiohttp.ClientSession(timeout=timeout) as session:
+    async with aiohttp.ClientSession(trust_env=True,timeout=timeout) as session:
         async with session.get(file_url, headers=headers) as response:
             total_size = int(response.headers.get("content-length", 0)) + current_size
 
